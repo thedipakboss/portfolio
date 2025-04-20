@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dipak Rajendra Patil's Hacker Portfolio</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #39FF14;
+            overflow-x: hidden;
+            cursor: none; /* Hide default cursor */
+        }
+        /* Light Mode */
+        body.light-mode {
+            background-color: #fff;
+            color: #000;
+        }
+        body.light-mode .terminal-box {
+            background: #f0f0f0;
+            color: #000;
+        }
+        body.light-mode nav a {
+            color: #000;
+        }
+        body.light-mode #theme-toggle {
+            background: #000;
+            color: #fff;
+        }
+        /* Matrix Rain Background */
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .matrix-rain canvas {
+            display: block;
+        }
+        /* Extreme Hacker Cursor Effect */
+        .cursor-effect {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(57, 255, 20, 0.8);
+            box-shadow: 0 0 20px #39FF14, 0 0 40px #39FF14, 0 0 60px #39FF14;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            animation: pulse 1s infinite alternate, glitch 0.5s infinite;
+        }
+        .cursor-effect::before,
+        .cursor-effect::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: inherit;
+            box-shadow: inherit;
+            animation: spin 3s linear infinite;
+        }
+        .cursor-effect::before {
+            animation-direction: reverse;
+        }
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+                box-shadow: 0 0 20px #39FF14, 0 0 40px #39FF14, 0 0 60px #39FF14;
+            }
+            100% {
+                opacity: 0.7;
+                transform: translate(-50%, -50%) scale(1.2);
+                box-shadow: 0 0 40px #39FF14, 0 0 80px #39FF14, 0 0 120px #39FF14;
+            }
+        }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg) scale(0.8);
+            }
+            100% {
+                transform: rotate(360deg) scale(1.2);
+            }
+        }
+        @keyframes glitch {
+            0% {
+                filter: hue-rotate(0deg);
+                transform: translate(-50%, -50%) scale(1);
+            }
+            25% {
+                filter: hue-rotate(90deg);
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+            50% {
+                filter: hue-rotate(180deg);
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+            75% {
+                filter: hue-rotate(270deg);
+                transform: translate(-50%, -50%) scale(1.05);
+            }
+            100% {
+                filter: hue-rotate(360deg);
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        /* Header Section */
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(to bottom, #39FF14, transparent);
+            animation: fadeIn 2s ease-in-out;
+        }
+        header h1 {
+            font-size: 4rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 0 0 20px #39FF14, 0 0 40px #39FF14;
+            animation: glow 1.5s infinite alternate;
+        }
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 20px #39FF14, 0 0 40px #39FF14;
+            }
+            100% {
+                text-shadow: 0 0 40px #39FF14, 0 0 80px #39FF14;
+            }
+        }
+        header p {
+            font-size: 1.5rem;
+            margin-top: 10px;
+            text-shadow: 0 0 5px #39FF14;
+        }
+        /* Profile Picture */
+        .profile-pic {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 5px solid #39FF14;
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.8);
+            object-fit: cover;
+            margin: 20px auto;
+            display: block;
+            transition: transform 0.5s, box-shadow 0.5s;
+            animation: profilePicAnimation 5s infinite alternate;
+        }
+        .profile-pic:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(57, 255, 20, 1);
+        }
+        @keyframes profilePicAnimation {
+            0% {
+                transform: rotate(0deg) scale(1);
+                box-shadow: 0 0 20px rgba(57, 255, 20, 0.8);
+            }
+            100% {
+                transform: rotate(360deg) scale(1.05);
+                box-shadow: 0 0 30px rgba(57, 255, 20, 1);
+            }
+        }
+        /* Navigation Bar */
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            background: #121212;
+        }
+        nav a {
+            color: #39FF14;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        nav a::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #39FF14;
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        nav a:hover::after {
+            opacity: 1;
+        }
+        nav a:hover {
+            color: #00FFFF;
+            text-shadow: 0 0 10px #00FFFF;
+        }
+        /* Main Content Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #121212;
+            border: 2px solid #39FF14;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+        section.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        section h2 {
+            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px #39FF14;
+        }
+        section p, section ul {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+        /* Hacker Terminal Animation */
+        .terminal-box {
+            position: relative;
+            padding: 20px;
+            background: #121212;
+            border: 2px solid #39FF14;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .terminal-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.1), transparent);
+            animation: scan 3s linear infinite;
+        }
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        /* List Animations */
+        .terminal-box ul li {
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: fadeInListItem 0.5s forwards;
+        }
+        .terminal-box ul li:nth-child(1) { animation-delay: 0.1s; }
+        .terminal-box ul li:nth-child(2) { animation-delay: 0.2s; }
+        .terminal-box ul li:nth-child(3) { animation-delay: 0.3s; }
+        .terminal-box ul li:nth-child(4) { animation-delay: 0.4s; }
+        .terminal-box ul li:nth-child(5) { animation-delay: 0.5s; }
+        @keyframes fadeInListItem {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        /* Interactive Game */
+        .game-container {
+            text-align: center;
+        }
+        .game-container button {
+            background: #39FF14;
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .game-container button:hover {
+            background: #00FFFF;
+            box-shadow: 0 0 10px #00FFFF;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #121212;
+            border: 2px solid #39FF14;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        #progress-fill {
+            height: 100%;
+            background: #39FF14;
+            transition: width 0.3s ease;
+        }
+        /* Feedback Form */
+        #feedback-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        #feedback-form input, #feedback-form textarea, #feedback-form button {
+            padding: 10px;
+            border: 2px solid #39FF14;
+            border-radius: 5px;
+            background: #121212;
+            color: #39FF14;
+        }
+        #feedback-form button {
+            background: #39FF14;
+            color: #000;
+            cursor: pointer;
+        }
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #121212;
+            color: #39FF14;
+        }
+        /* Particle Effects */
+        .particle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: #39FF14;
+            border-radius: 50%;
+            animation: floatParticle 5s infinite ease-in-out;
+        }
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100vw);
+                opacity: 0;
+            }
+        }
+        /* Scrolling Text Effect */
+        .scrolling-text {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            white-space: nowrap;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px #39FF14;
+            animation: scrollText 10s linear infinite;
+        }
+        @keyframes scrollText {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+            section {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Rain Background -->
+    <div class="matrix-rain">
+        <canvas id="matrixCanvas"></canvas>
+    </div>
+    <!-- Particle Effects -->
+    <div class="particle-container" id="particleContainer"></div>
+    <!-- Extreme Hacker Cursor Effect -->
+    <div class="cursor-effect" id="cursorEffect"></div>
+    <!-- Header Section -->
+    <header>
+        <h1>Dipak Rajendra Patil</h1>
+        <p>First Year Student | Software Engineering | MIT Academy of Engineering</p>
+        <img src="Dipak.png" alt="Profile Picture" class="profile-pic">
+    </header>
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="javascript:void(0);" onclick="showSection('about')" data-tooltip="Learn about me">About Me</a>
+        <a href="javascript:void(0);" onclick="showSection('projects')" data-tooltip="View my projects">Projects</a>
+        <a href="javascript:void(0);" onclick="showSection('skills')" data-tooltip="My technical skills">Skills</a>
+        <a href="javascript:void(0);" onclick="showSection('books')" data-tooltip="Books I've read">Books</a>
+        <a href="javascript:void(0);" onclick="showSection('family')" data-tooltip="Meet my family">Family</a>
+        <a href="javascript:void(0);" onclick="showSection('contact')" data-tooltip="Get in touch">Contact</a>
+        <a href="javascript:void(0);" onclick="showSection('feedback')" data-tooltip="Leave feedback">Feedback</a>
+    </nav>
+    <!-- Scrolling Text Effect -->
+    <div class="scrolling-text">Welcome to Dipak's Hacker Portfolio 🚀</div>
+    <!-- Main Content -->
+    <div class="container">
+        <section id="about">
+            <h2>About Me</h2>
+            <div class="terminal-box">
+                <p>I am a First Year Student at MIT Academy of Engineering, Alandi, Pune. My birthdate is 02/02/2007. My hobbies include:</p>
+                <ul>
+                    <li>Reading books</li>
+                    <li>Listening to music</li>
+                    <li>Mathematics</li>
+                    <li>Chess</li>
+                    <li>Coding</li>
+                    <li>Watching movies and web series</li>
+                </ul>
+                <p>I have deep expertise in Python and C language. I am currently part of the Vertex Club at my college, where we create animations using code. I also won a datathon competition, securing 3rd rank as the team leader.</p>
+                <p>My peak achievement to date is securing 99.2% in my 10th grade. I am passionate about learning new technologies and applying them to solve real-world problems.</p>
+            </div>
+        </section>
+        <section id="projects">
+            <h2>Projects</h2>
+            <div class="terminal-box">
+                <p>Currently, I am involved in:</p>
+                <ul>
+                    <li><strong>Vertex Club</strong> - Creating animations using Python, collaborating with peers to develop creative projects.</li>
+                    <li><strong>Datathon Competition</strong> - Team Leader, where we developed a data-driven solution and secured 3rd place among various teams.</li>
+                </ul>
+                <p>These experiences have helped me enhance my teamwork and leadership skills while deepening my understanding of programming and data analysis.</p>
+            </div>
+        </section>
+        <section id="skills">
+            <h2>Skills</h2>
+            <div class="terminal-box">
+                <p>Expertise in:</p>
+                <ul>
+                    <li><strong>Python</strong> - Proficient in developing applications and automating tasks.</li>
+                    <li><strong>C Language</strong> - Strong foundation in programming concepts and problem-solving.</li>
+                </ul>
+                <p>I am continuously learning and expanding my skill set to include web development and data science.</p>
+            </div>
+        </section>
+        <section id="books">
+            <h2>Books</h2>
+            <div class="terminal-box">
+                <p>Some of the notable books include:</p>
+                <ul>
+                    <li>The Alchemist</li>
+                    <li>The Secret</li>
+                    <li>The Power of Subconscious Mind</li>
+                    <li>Mahabharata</li>
+                    <li>Ramayana</li>
+                    <li>Atomic Habits</li>
+                    <li>Rich Dad Poor Dad</li>
+                    <li>Think and Grow Rich</li>
+                </ul>
+                <p>Reading has broadened my perspective and inspired me to pursue my goals with determination.</p>
+            </div>
+        </section>
+        <section id="family">
+            <h2>Family</h2>
+            <div class="terminal-box">
+                <p>I have a family of four: my mom, dad, and sister, who is one year older and studying BAMS. My family has always supported my educational journey and encouraged me to pursue my passions.</p>
+            </div>
+        </section>
+        <section id="contact">
+            <h2>Contact</h2>
+            <div class="terminal-box">
+                <p>Email: dipakraj020207@gmail.com</p>
+                <p>LinkedIn: <a href="https://www.linkedin.com/in/dipak-patil-988057330?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank">linkedin.com/dipak_patil</a></p>
+                <p>GitHub: <a href="https://github.com/thedipakboss" target="_blank">github.com/dipak_patil</a></p>
+
+
+                <p>Instagram: <a href="https://www.instagram.com/the_dipakk?igsh=Zjc5ZTQ0dWR4bTJw" target="_blank">instagram.com/dipak_patil</a></p>
+
+            
+            </div>
+        </section>
+        <section id="feedback">
+            <h2>Feedback</h2>
+            <div class="terminal-box">
+                <form id="feedback-form">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                    <button type="submit">Submit</button>
+                </form>
+                <p id="form-response"></p>
+            </div>
+        </section>
+    </div>
+    <!-- Interactive Game -->
+    <div class="game-container">
+        <h2>Hack the System!</h2>
+        <button onclick="handleClick()">Click to Hack 🔓</button>
+        <p id="click-counter">You've hacked 0 times. Keep going! 🚀</p>
+        <div class="progress-bar">
+            <div id="progress-fill" style="width: 0%;"></div>
+        </div>
+    </div>
+    <!-- Dark/Light Mode Toggle -->
+    <div style="text-align: center; margin: 20px;">
+        <button id="theme-toggle">Switch to Light Mode</button>
+    </div>
+    <!-- Footer -->
+    <footer>
+        <h2>Thank you for visiting my hacker portfolio! 🚀</h2>
+    </footer>
+    <script>
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const columns = Math.floor(canvas.width / 20);
+        const drops = Array(columns).fill(1);
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#39FF14';
+            ctx.font = '15px monospace';
+            drops.forEach((drop, index) => {
+                const text = String.fromCharCode(Math.random() * 128);
+                ctx.fillText(text, index * 20, drop * 20);
+                if (drop * 20 > canvas.height && Math.random() > 0.975) {
+                    drops[index] = 0;
+                }
+                drops[index]++;
+            });
+        }
+        setInterval(drawMatrix, 35);
+        // Particle Effects
+        const particleContainer = document.getElementById('particleContainer');
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.top = `${Math.random() * 100}vh`;
+            particle.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            particleContainer.appendChild(particle);
+            setTimeout(() => particle.remove(), 5000);
+        }
+        setInterval(createParticle, 100);
+        // Section Switching Logic
+        function showSection(sectionId) {
+            document.querySelectorAll('section').forEach(section => {
+                section.style.display = 'none';
+                section.classList.remove('active');
+            });
+            const selectedSection = document.getElementById(sectionId);
+            selectedSection.style.display = 'block';
+            setTimeout(() => selectedSection.classList.add('active'), 10);
+        }
+        // Interactive Game Logic
+        let clickCount = 0;
+        const maxHacks = 100;
+        function handleClick() {
+            clickCount++;
+            const progress = (clickCount / maxHacks) * 100;
+            document.getElementById('click-counter').textContent = `You've hacked ${clickCount} times. Keep going! 🚀`;
+            document.getElementById('progress-fill').style.width = `${progress}%`;
+            if (clickCount >= maxHacks) {
+                alert("Congratulations! You've successfully hacked the system!");
+                clickCount = 0;
+                document.getElementById('progress-fill').style.width = '0%';
+            }
+        }
+        // Extreme Hacker Cursor Effect
+        const cursorEffect = document.getElementById('cursorEffect');
+        document.addEventListener('mousemove', (e) => {
+            cursorEffect.style.left = `${e.pageX}px`;
+            cursorEffect.style.top = `${e.pageY}px`;
+        });
+        document.addEventListener('mouseenter', () => {
+            cursorEffect.style.opacity = '1';
+        });
+        document.addEventListener('mouseleave', () => {
+            cursorEffect.style.opacity = '0';
+        });
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            themeToggle.textContent = document.body.classList.contains('light-mode') ? 'Switch to Dark Mode' : 'Switch to Light Mode';
+        });
+        // Feedback Form Submission
+        document.getElementById('feedback-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('form-response').textContent = 'Thank you for your feedback!';
+            this.reset();
+        });
+        // Initial Setup
+        window.onload = () => {
+            showSection('about');
+        };
+    </script>
+</body>
+</html>
